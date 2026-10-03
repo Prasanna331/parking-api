@@ -1,0 +1,223 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Parking API — Progress Summary</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 32px 16px 48px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 32px; }
+
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #57606a;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+  }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card-label { font-size: 11px; color: #57606a; margin-bottom: 4px; }
+  .card-value { font-size: 26px; font-weight: 700; color: #3b82d4; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    font-weight: 600;
+    color: #57606a;
+    font-size: 12px;
+    padding: 6px 10px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  td { padding: 8px 10px; border-bottom: 1px solid #f0f1f3; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-green  { background: #dcfce7; color: #16a34a; }
+  .badge-blue   { background: #dbeafe; color: #1d4ed8; }
+  .badge-purple { background: #ede9fe; color: #7c3aed; }
+  .badge-gray   { background: #f1f5f9; color: #475569; }
+
+  .file { font-family: "Consolas", "Courier New", monospace; font-size: 12px; color: #3b82d4; }
+
+  ul.checklist { list-style: none; padding: 0; }
+  ul.checklist li { padding: 5px 0; font-size: 13px; display: flex; align-items: flex-start; gap: 8px; }
+  ul.checklist li::before { content: "✓"; color: #16a34a; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 12px;
+    color: #57606a;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🅿️ Parking API — Progress Summary</h1>
+  <p class="subtitle">Full-stack parking management system · React + Spring Boot + PostgreSQL + Docker</p>
+
+  
+  <div class="section">
+    <div class="section-title">At a glance</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-label">Files Changed</div><div class="card-value">10</div></div>
+      <div class="card"><div class="card-label">Issues Fixed</div><div class="card-value">5</div></div>
+      <div class="card"><div class="card-label">Features Added</div><div class="card-value">8</div></div>
+      <div class="card"><div class="card-label">Build Status</div><div class="card-value" style="font-size:18px;color:#16a34a">✓ Passing</div></div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Bug Fixes</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Bug</th>
+          <th>File(s)</th>
+          <th>Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Docker build failing at step 6/6 <span class="badge badge-gray">TS errors</span></td>
+          <td><span class="file">src/api/websocket.ts</span><br /><span class="file">package.json</span></td>
+          <td>Installed <code>@types/sockjs-client</code>; typed STOMP <code>message</code> callback as <code>IMessage</code></td>
+        </tr>
+        <tr>
+          <td>Dashboard showing wrong / zero available spots</td>
+          <td><span class="file">src/pages/DashboardPage.tsx</span></td>
+          <td>Changed <code>getSpots('')</code> → <code>getSpots()</code>; fixed query key from <code>['spots', null]</code> to <code>['spots']</code></td>
+        </tr>
+        <tr>
+          <td>Lot "total spots" out of sync with actual spot count</td>
+          <td><span class="file">ParkingSpotService.java</span><br /><span class="file">ParkingSpotRepository.java</span><br /><span class="file">ParkingLotRequest.java</span></td>
+          <td>Added <code>syncTotalSpots()</code> called on create / delete / lot-reassign; <code>countByLotId</code> repo query; removed manual input from frontend form</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Features Added</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>File(s)</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Full Lot CRUD</strong> — Add, Edit, Delete lots via modal form</td>
+          <td><span class="file">src/api/lots.ts</span><br /><span class="file">src/pages/LotsPage.tsx</span></td>
+          <td><span class="badge badge-purple">admin</span></td>
+        </tr>
+        <tr>
+          <td><strong>Full Spot CRUD</strong> — Add, Edit, Delete spots via modal form</td>
+          <td><span class="file">src/api/spots.ts</span><br /><span class="file">src/pages/SpotsPage.tsx</span></td>
+          <td><span class="badge badge-purple">admin</span></td>
+        </tr>
+        <tr>
+          <td><strong>Quick Status Change</strong> — Change spot status via popup grid</td>
+          <td><span class="file">src/pages/SpotsPage.tsx</span></td>
+          <td><span class="badge badge-blue">admin + operator</span></td>
+        </tr>
+        <tr>
+          <td><strong>Back button</strong> on Spots page → navigates to Lots</td>
+          <td><span class="file">src/pages/SpotsPage.tsx</span></td>
+          <td><span class="badge badge-gray">all users</span></td>
+        </tr>
+        <tr>
+          <td><strong>Lot name in header</strong> — Spots page shows which lot you're viewing</td>
+          <td><span class="file">src/api/spots.ts</span><br /><span class="file">src/pages/SpotsPage.tsx</span></td>
+          <td><span class="badge badge-gray">all users</span></td>
+        </tr>
+        <tr>
+          <td><strong>Inactive badge</strong> on lots marked as inactive</td>
+          <td><span class="file">src/pages/LotsPage.tsx</span></td>
+          <td><span class="badge badge-gray">all users</span></td>
+        </tr>
+        <tr>
+          <td><strong>Colour-coded spot borders</strong> matching status colour</td>
+          <td><span class="file">src/pages/SpotsPage.tsx</span></td>
+          <td><span class="badge badge-gray">all users</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">API surface now covered by the UI</div>
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Endpoint</th><th>UI action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge badge-blue">GET</span></td><td><span class="file">/api/lots</span></td><td>Lots page list</td></tr>
+        <tr><td><span class="badge badge-green">POST</span></td><td><span class="file">/api/lots</span></td><td>Add Lot modal</td></tr>
+        <tr><td><span class="badge badge-blue">PUT</span></td><td><span class="file">/api/lots/{id}</span></td><td>Edit Lot modal</td></tr>
+        <tr><td><span class="badge badge-gray">DELETE</span></td><td><span class="file">/api/lots/{id}</span></td><td>Delete button</td></tr>
+        <tr><td><span class="badge badge-blue">GET</span></td><td><span class="file">/api/spots?lotId=</span></td><td>Spots page list</td></tr>
+        <tr><td><span class="badge badge-blue">GET</span></td><td><span class="file">/api/spots</span></td><td>Dashboard counts</td></tr>
+        <tr><td><span class="badge badge-green">POST</span></td><td><span class="file">/api/spots</span></td><td>Add Spot modal</td></tr>
+        <tr><td><span class="badge badge-blue">PUT</span></td><td><span class="file">/api/spots/{id}</span></td><td>Edit Spot modal</td></tr>
+        <tr><td><span class="badge badge-purple">PATCH</span></td><td><span class="file">/api/spots/{id}/status</span></td><td>Quick status popup</td></tr>
+        <tr><td><span class="badge badge-gray">DELETE</span></td><td><span class="file">/api/spots/{id}</span></td><td>Delete button</td></tr>
+        <tr><td><span class="badge badge-green">POST</span></td><td><span class="file">/api/auth/login</span></td><td>Login page</td></tr>
+        <tr><td><span class="badge badge-green">POST</span></td><td><span class="file">/api/auth/register</span></td><td>Register page</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-title">Stack</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-label">Frontend</div>React 18 · TypeScript · Vite · TailwindCSS · TanStack Query · Zustand</div>
+      <div class="card"><div class="card-label">Backend</div>Spring Boot 3 · Spring Security · JWT · JPA / Hibernate</div>
+      <div class="card"><div class="card-label">Database</div>PostgreSQL 15</div>
+      <div class="card"><div class="card-label">Real-time</div>WebSocket · STOMP · SockJS</div>
+      <div class="card"><div class="card-label">Infrastructure</div>Docker Compose · Nginx (reverse proxy + SPA)</div>
+    </div>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+node_modules/
+.env
+*.log
+
+# Project exclude paths
+/parking-ui/dist/
