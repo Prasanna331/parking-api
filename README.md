@@ -1,90 +1,175 @@
 # 🅿️ Parking API
 
-Real-time parking availability backend built with Node.js, Express, PostgreSQL, and Socket.io.
+A RESTful backend for a parking management system built with **Node.js, Express.js, PostgreSQL, and Redis**. The project includes JWT-based authentication, role-aware access control, database configuration, and a modular structure designed to support parking lot and parking spot management.
 
----
+## 🚀 Features
+
+- **JWT Authentication** — Token-based authentication with registration and login.
+- **Role-Based Access Control** — Support for admin, operator, and viewer roles.
+- **PostgreSQL Database** — Relational data model for users, parking lots, zones, parking spots, and status history.
+- **Docker Compose** — Local database and Redis service configuration.
+- **Modular Architecture** — Organized routes, configuration, services, and utility modules.
+- **Logging** — Winston-based application logging.
+- **Real-Time Architecture** — Socket.io service module for real-time parking updates.
+
+*Note: Parking management endpoints and real-time functionality should be documented as available features only after their implementations are complete.*
+
+## 🛠️ Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Runtime | Node.js |
+| Backend Framework | Express.js |
+| Database | PostgreSQL |
+| Caching | Redis |
+| Authentication | JSON Web Tokens (JWT) |
+| Real-Time Communication | Socket.io |
+| Logging | Winston |
+| Containerization | Docker, Docker Compose |
 
 ## 📁 Project Structure
 
-```
+```text
 parking-api/
-├── schema.sql              # Full DB schema (run once)
-├── docker-compose.yml      # Local PostgreSQL + Redis
-├── .env.example            # Copy to .env and fill in values
+├── schema.sql
+├── docker-compose.yml
+├── .env.example
+├── package.json
 └── src/
-    ├── index.js            # Entry point
-    ├── app.js              # Express app
+    ├── index.js
+    ├── app.js
     ├── config/
-    │   ├── db.js           # PostgreSQL connection pool
-    │   └── migrate.js      # Runs schema.sql migration
+    │   ├── db.js
+    │   └── migrate.js
     ├── routes/
-    │   ├── auth.js         # Auth routes (Day 2)
-    │   ├── lots.js         # Parking lot routes (Day 3)
-    │   └── spots.js        # Parking spot routes (Day 4)
+    │   ├── auth.js
+    │   ├── lots.js
+    │   └── spots.js
     ├── services/
-    │   └── socketService.js # WebSocket (Socket.io) setup
+    │   └── socketService.js
     └── utils/
-        └── logger.js       # Winston logger
+        └── logger.js
 ```
 
----
+## ⚙️ Getting Started
 
-## 🚀 Getting Started
+### Prerequisites
 
-### 1. Install dependencies
+Ensure the following tools are installed:
+
+- Node.js and npm
+- Docker and Docker Compose
+- Git
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Prasanna331/parking-api.git
+cd parking-api
+```
+
+### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
-### 2. Configure environment
+### 3. Configure environment variables
+
+Create a local environment file from the example:
+
 ```bash
 cp .env.example .env
-# Edit .env with your DB credentials and JWT secret
 ```
 
-### 3. Start local database
+Update `.env` with the required database connection details, JWT secret, and other application configuration.
+
+**Security:** Never commit your `.env` file or production secrets to GitHub.
+
+### 4. Start database services
+
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
-### 4. Run DB migration
+This starts the services configured in `docker-compose.yml`.
+
+### 5. Initialize the database
+
 ```bash
 npm run migrate
 ```
 
-### 5. Start the server
+Run the migration after configuring the database connection.
+
+### 6. Start the development server
+
 ```bash
 npm run dev
 ```
 
----
+Check `package.json` for the available scripts and required configuration.
 
-## 🗄️ Database Tables
+## 🗄️ Database Design
 
-| Table | Description |
+The database schema defines the following core entities:
+
+| Table | Purpose |
 |---|---|
-| `users` | Admins, operators, viewers |
-| `parking_lots` | Physical parking locations |
-| `parking_zones` | Sections within a lot (Floor 1, Zone A, etc.) |
-| `parking_spots` | Individual spots with real-time status |
-| `spot_history` | Full audit log of every status change |
+| `users` | Stores user accounts and role information. |
+| `parking_lots` | Represents parking locations. |
+| `parking_zones` | Organizes parking areas into zones or sections. |
+| `parking_spots` | Represents individual parking spaces and their status. |
+| `spot_history` | Maintains a history of parking spot status changes. |
+
+## 🔐 Authentication
+
+The authentication module uses JSON Web Tokens (JWT) to support authenticated API access.
+
+The authentication workflow includes:
+
+- User registration and login endpoints.
+- Token-based authentication.
+- User roles for access-control requirements.
+
+Protected endpoints should validate the JWT and enforce the appropriate role permissions.
+
+## 🏗️ Architecture
+
+The application follows a modular backend structure:
+
+- **Routes:** Define API endpoints and request handling.
+- **Configuration:** Manage database connectivity and schema migration.
+- **Services:** Encapsulate reusable application services, including real-time communication.
+- **Utilities:** Provide shared functionality such as logging.
+- **Database:** Store user and parking management data in PostgreSQL.
+
+This structure supports incremental development, separation of concerns, and easier testing and maintenance.
+
+## 🔭 Planned Enhancements
+
+- Complete parking lot and parking spot CRUD operations.
+- Add parking spot availability management.
+- Implement and validate real-time status updates.
+- Integrate sensor or camera data ingestion through MQTT.
+- Add administrative controls and manual status overrides.
+- Develop parking availability and reservation APIs.
+- Add parking history and analytics endpoints.
+- Strengthen input validation, rate limiting, and error handling.
+- Publish interactive API documentation using Swagger/OpenAPI.
+- Expand automated unit and integration test coverage.
+- Prepare the application for deployment.
+
+## 🧪 Testing
+
+Automated testing will help validate authentication, authorization, database operations, API behavior, and parking availability rules.
+
+Test commands should match the scripts configured in `package.json`.
+
+## 📄 License
+
+Add a license file if you intend to distribute this project under an open-source license.
 
 ---
 
-## 📅 Build Progress
-
-- [x] Day 1 — Project setup, DB schema, environment config
-- [x] Day 2 — Auth (JWT, register, login, roles)
-- [ ] Day 3 — Parking lot CRUD
-- [ ] Day 4 — Parking spot CRUD + status management
-- [ ] Day 5 — Review & testing
-- [ ] Day 6 — Real-time WebSocket layer
-- [ ] Day 7 — Sensor/camera data ingestion (MQTT)
-- [ ] Day 8 — Manual override + admin controls
-- [ ] Day 9 — Availability query API
-- [ ] Day 10 — Integration testing
-- [ ] Day 11 — Booking/reservation module
-- [ ] Day 12 — History & analytics endpoints
-- [ ] Day 13 — Rate limiting, error handling hardening
-- [ ] Day 14 — API documentation (Swagger)
-- [ ] Day 15 — Final testing & deployment-ready
+Developed by **Prasanna Patyam**.
